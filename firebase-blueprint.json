@@ -1,0 +1,68 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application, either a patient or an admin.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the user." },
+        "email": { "type": "string", "format": "email", "description": "The email address of the user." },
+        "displayName": { "type": "string", "description": "The display name of the user." },
+        "role": { "type": "string", "enum": ["patient", "admin"], "description": "The role of the user." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The timestamp when the user was created." }
+      },
+      "required": ["uid", "email", "displayName", "role", "createdAt"]
+    },
+    "Doctor": {
+      "title": "Doctor",
+      "description": "A medical professional at the hospital.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the doctor." },
+        "name": { "type": "string", "description": "The name of the doctor." },
+        "specialty": { "type": "string", "description": "The specialty of the doctor." },
+        "experience": { "type": "number", "description": "Years of experience." },
+        "image": { "type": "string", "format": "uri", "description": "The image URL of the doctor." },
+        "description": { "type": "string", "description": "A brief description of the doctor." },
+        "availability": { "type": "array", "items": { "type": "string" }, "description": "Available time slots." }
+      },
+      "required": ["id", "name", "specialty", "experience", "image", "description", "availability"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "A scheduled medical consultation.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the appointment." },
+        "patientId": { "type": "string", "description": "The ID of the patient." },
+        "patientName": { "type": "string", "description": "The name of the patient." },
+        "doctorId": { "type": "string", "description": "The ID of the doctor." },
+        "doctorName": { "type": "string", "description": "The name of the doctor." },
+        "date": { "type": "string", "format": "date", "description": "The date of the appointment." },
+        "time": { "type": "string", "description": "The time of the appointment." },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled"], "description": "The status of the appointment." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The timestamp when the appointment was created." }
+      },
+      "required": ["id", "patientId", "patientName", "doctorId", "doctorName", "date", "time", "status", "createdAt"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "A medical report uploaded by or for a patient.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the report." },
+        "patientId": { "type": "string", "description": "The ID of the patient." },
+        "title": { "type": "string", "description": "The title of the report." },
+        "fileUrl": { "type": "string", "format": "uri", "description": "The URL of the report file." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The timestamp when the report was created." }
+      },
+      "required": ["id", "patientId", "title", "fileUrl", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "Collection of users." },
+    "/doctors/{id}": { "schema": "Doctor", "description": "Collection of doctors." },
+    "/appointments/{id}": { "schema": "Appointment", "description": "Collection of appointments." },
+    "/reports/{id}": { "schema": "Report", "description": "Collection of medical reports." }
+  }
+}
